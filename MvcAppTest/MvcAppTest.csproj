@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <UserSecretsId>9f710e63-e0a9-4343-a667-a9caca0bde80</UserSecretsId>
+        <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Bogus" Version="34.0.2" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+        <PackageReference Include="Mapster" Version="7.3.0" />
+        <PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
+        <PackageReference Include="MediatR" Version="12.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.15" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.15" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.15">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
+        <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Migrations" />
+        <InternalsVisibleTo Include="MvcAppTests.IntegrationTests" />
+        <InternalsVisibleTo Include="MvcAppTests.UnitTests" />
+    </ItemGroup>
+
+</Project>

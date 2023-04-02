@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model MvcAppTest.Core.Application.Features.Orders.Queries.OrderVm
+
+@{
+    ViewBag.Title = "Удаление заказа";
+    Layout = "_Layout";
+}
+
+<h2>Удаление заказа</h2>
+
+<h3>Вы уверены что хотите удалить данный заказ?</h3><br/>
+
+<h4>Заказ</h4>
+<hr/>
+
+<div class="col-md-6">
+    <dl class="row">
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Number)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Number)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Date)</dt>
+        <dd class="col-sm-9">@($"{Model.Date:dd.MM.yyyy HH:mm:ss}")</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ProviderName)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.ProviderName)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.OrderItemsCount)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.OrderItemsCount)</dd>
+    </dl>
+
+    <form method="post">
+        <input type="submit" value="Удалить" class="btn btn-danger"/> |
+        <a asp-action="Index">Вернуться к списку заказов</a> |
+        <a asp-action="Details" asp-route-id="@Model.Id">Подробности</a>
+    </form>
+</div>

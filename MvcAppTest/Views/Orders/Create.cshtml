@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using MvcAppTest.Controllers
+@model MvcAppTest.Core.Application.Features.Orders.Commands.UpsertOrderCommand
+
+@{
+    ViewBag.Title = "Создать Заказ";
+    Layout = "_Layout";
+    var providers = ViewData[OrdersController.ViewDataKeys.Providers] as SelectList ?? new SelectList(new List<SelectListItem>());
+}
+
+<h2>Создать Заказ</h2>
+
+<h4>Заказ</h4>
+<hr/>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row mb-3">
+                <label asp-for="Number" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9">
+                    <input asp-for="Number" class="form-control"/>
+                    <span asp-validation-for="Number" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="Date" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9">
+                    <input asp-for="Date" class="form-control"/>
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="row mb-3">
+                <label asp-for="ProviderId" class="col-sm-3 col-form-label">Provider</label>
+                <div class="col-sm-9">
+                    <select asp-for="ProviderId" asp-items="providers" class="form-control"></select>
+                    <span asp-validation-for="ProviderId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <input type="submit" value="Создать" class="btn btn-primary"/>
+        </form>
+    </div>
+</div><br/>
+
+<div>
+    <a asp-action="Index">Вернуться к списку заказов</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

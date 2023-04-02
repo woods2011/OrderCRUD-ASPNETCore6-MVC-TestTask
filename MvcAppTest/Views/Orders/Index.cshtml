@@ -1,0 +1,164 @@
+﻿@using MvcAppTest.Controllers
+@using MvcAppTest.Core.Application.Features.Orders.Queries
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model MvcAppTest.ViewModels.ComposedIndexViewModel
+
+@{
+    ViewBag.Title = "Заказы";
+    Layout = "_Layout";
+    var allFiltersDistinct = (AllFiltersDistinctVm) ViewData[OrdersController.ViewDataKeys.AllFiltersDistinct]!;
+}
+
+
+<h2>Заказы</h2>
+<hr/>
+
+<div class="row">
+    <div class="col-md-3">
+        <h5>Фильтры</h5>
+        <hr/>
+        <dl class="row">
+            @using (Html.BeginForm("Index", "Orders", FormMethod.Get))
+            {
+                <input type="hidden" asp-for="FilterOn" value="1" class="form-control"/>
+
+                <div class="row mb-3">
+                    <label class="form-label fw-bold">Numbers</label>
+                    <select multiple id="OrderNumbers" asp-for="OrdNumber" asp-items="@(new SelectList(allFiltersDistinct.OrderNumbers))" class="form-control"></select>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="form-label fw-bold">Provider Names</label>
+                    <select multiple id="OrderProviderNames" asp-for="OrdProvider" asp-items="@(new SelectList(allFiltersDistinct.OrderProviderNames))" class="form-control"></select>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-1 col-form-label fw-bold">От</label>
+                    <div class="col-sm-11">
+                        <input asp-for="OrdStart" class="form-control" type="date"/>
+                        <span asp-validation-for="OrdStart" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-1 col-form-label fw-bold">По</label>
+                    <div class="col-sm-11">
+                        <input asp-for="OrdEnd" class="form-control" type="date"/>
+                        <span asp-validation-for="OrdEnd" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="form-label fw-bold">Order Item Names</label>
+                    <select id="OrderItemNames" multiple asp-for="OrdItemName" asp-items="@(new SelectList(allFiltersDistinct.OrderItemNames))" class="form-control"></select>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="form-label fw-bold">Order Item Units</label>
+                    <select id="OrderItemUnits" multiple asp-for="OrdItemUnit" asp-items="@(new SelectList(allFiltersDistinct.OrderItemUnits))" class="form-control"></select>
+                </div>
+
+                <div>
+                    <input type="submit" value="Применить" class="btn btn-primary"/> |
+                    <a asp-action="Index">Сбросить фильтры</a>
+                </div>
+            }
+        </dl>
+    </div>
+
+    <div class="col-md-9">
+        <p>
+            <a class="btn btn-primary btn-sm" asp-action="Create">Добавить новый заказ</a>
+        </p>
+
+        <table class="table">
+            <tr>
+                @* <th>@Html.DisplayNameFor(model => model.Orders[0].Id)</th> *@
+                <th>@Html.DisplayNameFor(model => model.Orders[0].Number)</th>
+                <th>@Html.DisplayNameFor(model => model.Orders[0].Date)</th>
+                <th>@Html.DisplayNameFor(model => model.Orders[0].ProviderName)</th>
+                <th>Order Items Count</th>
+            </tr>
+
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    @* <td>@order.Id</td> *@
+                    <td>
+                        <a asp-action="Details" asp-route-id="@order.Id">@order.Number</a>
+                    </td>
+                    <td>@order.Date.ToString("dd.MM.yyyy")</td>
+                    <td>@order.ProviderName</td>
+                    <td>@order.OrderItemsCount</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@order.Id">Редактировать</a> |
+                        <a asp-action="Details" asp-route-id="@order.Id">Подробно</a> |
+                        <a asp-action="Delete" asp-route-id="@order.Id">Удалить</a>
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <nav>
+            <ul class="pagination">
+                @if (Model.Orders.HasPreviousPage)
+                {
+                    <li class="page-item">
+                        @{
+                            if (Model.FilterOn == 0)
+                            {
+                                <a class="page-link" href="@Url.Action("Index", new { Page = Model.Page - 1 })">«</a>
+                            }
+                            else
+                            {
+                                <a class="page-link" href="@Url.Action("Index", new { Page = Model.Page - 1, Model.FilterOn, Model.OrdNumber, Model.OrdProvider, OrdStart = Model.OrdStart.ToString("yyyy-MM-dd"), OrdEnd = Model.OrdEnd.ToString("yyyy-MM-dd"), Model.OrdItemName, Model.OrdItemUnit })">«</a>
+                            }
+                        }
+                    </li>
+                }
+
+                @for (var i = 1; i <= Model.Orders.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.Page ? "active" : "")">
+                        @{
+                            if (Model.FilterOn == 0)
+                            {
+                                <a class="page-link" href="@Url.Action("Index", new { Page = i })">@i</a>
+                            }
+                            else
+                            {
+                                <a class="page-link" href="@Url.Action("Index", new { Page = i, Model.FilterOn, Model.OrdNumber, Model.OrdProvider, OrdStart = Model.OrdStart.ToString("yyyy-MM-dd"), OrdEnd = Model.OrdEnd.ToString("yyyy-MM-dd"), Model.OrdItemName, Model.OrdItemUnit })">@i</a>
+                            }
+                        }
+                    </li>
+                }
+
+                @if (Model.Orders.HasNextPage)
+                {
+                    <li class="page-item">
+                        @{
+                            if (Model.FilterOn == 0)
+                            {
+                                <a class="page-link" href="@Url.Action("Index", new { Page = Model.Page + 1 })">»</a>
+                            }
+                            else
+                            {
+                                <a class="page-link" href="@Url.Action("Index", new { Page = Model.Page + 1, Model.FilterOn, Model.OrdNumber, Model.OrdProvider, OrdStart = Model.OrdStart.ToString("yyyy-MM-dd"), OrdEnd = Model.OrdEnd.ToString("yyyy-MM-dd"), Model.OrdItemName, Model.OrdItemUnit })">»</a>
+                            }
+                        }
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/css/multi-select-tag.css">
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/js/multi-select-tag.js"></script>
+<script>
+    new MultiSelectTag('OrderNumbers');
+    new MultiSelectTag('OrderProviderNames');
+    new MultiSelectTag('OrderItemNames');
+    new MultiSelectTag('OrderItemUnits');
+</script>

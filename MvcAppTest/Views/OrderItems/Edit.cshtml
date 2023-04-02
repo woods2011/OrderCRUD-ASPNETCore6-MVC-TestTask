@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model MvcAppTest.Core.Application.Features.Orders.OrderItems.Commands.UpsertOrderItemCommand
+
+@{
+    ViewBag.Title = "Редактировать элемент заказа";
+    Layout = "_Layout";
+}
+
+<h2>Редактировать элемент заказа</h2>
+
+<h4>Элемент заказа</h4>
+<hr/>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row mb-3">
+                <input type="hidden" asp-for="Id" class="form-control"/>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="Name" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9">
+                    <input asp-for="Name" class="form-control"/>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="Quantity" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9">
+                    <input asp-for="Quantity" class="form-control" type="number" step="0.001"/>
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label asp-for="Unit" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-9">
+                    <input asp-for="Unit" class="form-control"/>
+                    <span asp-validation-for="Unit" class="text-danger"></span>
+                </div>
+            </div>
+
+            <input type="submit" value="Сохранить" class="btn btn-primary"/>
+        </form>
+    </div>
+</div><br/>
+
+<div>
+    <a asp-controller="Orders" asp-action="Details" asp-route-id="@Model.OrderId">Вернуться к заказу</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

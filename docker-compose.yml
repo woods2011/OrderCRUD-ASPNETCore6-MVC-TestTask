@@ -1,0 +1,31 @@
+version: '3.4'
+
+networks:
+  mvcapptest-net:
+    
+services:
+  mvcapptestdb:
+    container_name: mvc-app-test-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "7078:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=!secret123
+      - MSSQL_PID=Express
+    networks:
+      - mvcapptest-net 
+  mvcapptest:
+    container_name: mvc-app-test
+    image: woods2011/mvcapptest
+    ports:
+      - "7080:80"
+    depends_on:
+      - mvcapptestdb
+    environment:
+      - MvcAppTestConnectionString=Data Source=mvcapptestdb;Initial Catalog=MvcAppTestDb;User ID=sa;Password=!secret123;
+      - ASPNETCORE_URLS=http://+:80
+    networks:
+      - mvcapptest-net
+
+

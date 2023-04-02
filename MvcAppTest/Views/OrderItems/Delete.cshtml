@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model MvcAppTest.Core.Application.Features.Orders.OrderItems.Queries.OrderItemVm
+
+@{
+    ViewBag.Title = "Удалить элемент заказа";
+    Layout = "_Layout";
+}
+
+<h2>Удалить элемент заказа</h2>
+
+<h3>Вы уверены что хотите удалить данный элемент заказа?</h3><br/>
+
+<h4>Элемента заказа</h4>
+<hr/>
+
+<div class="col-md-4">
+    <dl class="row">
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Quantity)</dt>
+        <dd class="col-sm-9">@Html.Raw($"{Model.Quantity:0.###}")</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Unit)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Unit)</dd>
+    </dl>
+
+    <form method="post">
+        <input type="submit" value="Удалить" class="btn btn-danger"/> |
+        <a asp-controller="Orders" asp-action="Details" asp-route-id="@Model.OrderId">Вернуться к заказу</a>
+    </form>
+</div>
