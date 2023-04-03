@@ -4,7 +4,8 @@ CRUD приложение, для создания, удаления и реда
 
 ## Приложение
 
-Приложение разработано на ASP.NET Core 6.0 (MVC) с использованием Entity Framework Core 6.0 и MS SQL Server.
+Приложение разработано на ASP.NET Core 6.0 (MVC) с использованием Entity Framework Core 6.0 и MS SQL Server.  
+Для интеграционного тестирования использовалась SQLite.
 
 ## Запуск проекта
 
