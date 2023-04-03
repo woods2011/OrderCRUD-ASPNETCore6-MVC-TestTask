@@ -42,6 +42,7 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingPipeli
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
 
 builder.Services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+builder.Services.AddSingleton<IDbInitializer, DbInitializer>();
 
 
 var app = builder.Build();
@@ -88,9 +89,10 @@ static void CreateAndSeedDbIfNotExists(IServiceProvider services)
     {
         services = scope.ServiceProvider;
         var context = services.GetRequiredService<AppDbContext>();
+        var dbInitializer = services.GetService<IDbInitializer>();
 
         context.Database.EnsureCreated();
-        DbInitializer.SeedIfEmpty(context);
+        dbInitializer?.Seed(context);
     }
 }
 

@@ -4,9 +4,14 @@ using MvcAppTest.Infrastructure.Common.Extensions;
 
 namespace MvcAppTest.Infrastructure.Persistence;
 
-public static class DbInitializer
+public interface IDbInitializer
 {
-    public static void SeedIfEmpty(AppDbContext context)
+    void Seed(AppDbContext context);
+}
+
+public class DbInitializer : IDbInitializer
+{
+    public void Seed(AppDbContext context)
     {
         if (context.Providers.Any()) return;
 
